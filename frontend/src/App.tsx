@@ -18,9 +18,7 @@ const App: React.FC = () => {
         <header className="bg-white/95 backdrop-blur border-b border-slate-200 h-16 sticky top-0 z-40 shadow-sm shadow-slate-100/80">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-lg bg-slate-950 text-white grid place-items-center text-sm font-black shadow-sm">
-                ZA
-              </div>
+              
               <div>
                 <h1 className="text-sm sm:text-base font-black uppercase tracking-wider text-slate-900">Student Action Center</h1>
                 <p className="hidden sm:block text-xs font-medium text-slate-500">Counselor workload and student risk view</p>
