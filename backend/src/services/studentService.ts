@@ -10,11 +10,9 @@ export interface ActionCenterPayload {
 }
 
 export class StudentService {
-  // Injected data access backplane via structural composition
   constructor(private readonly db: MockDatabaseStore) {}
 
   public fetchAllStudents(): Student[] {
-    console.log(this.db.students)
     return this.db.students;
   }
 

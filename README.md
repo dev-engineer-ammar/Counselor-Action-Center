@@ -37,11 +37,13 @@ Example `backend/.env`:
 
 ```env
 PORT=5000
+FRONTEND_ORIGIN=http://localhost:5173
 ```
 
 Important backend variables:
 
 - `PORT`: API server port. Defaults to `5000` if not set.
+- `FRONTEND_ORIGIN`: Allowed browser origin for CORS. Defaults to `http://localhost:5173` if not set.
 
 Frontend:
 
@@ -97,6 +99,31 @@ http://localhost:5000/api
 ```
 
 You can override this with `VITE_API_BASE_URL` in a frontend `.env` file.
+
+## Run With Docker
+
+From the project root:
+
+```bash
+docker compose up --build
+```
+
+Then open:
+
+```text
+http://localhost:5173
+```
+
+The Compose setup starts:
+
+- `frontend` on `http://localhost:5173`
+- `backend` on `http://localhost:5000`
+
+Stop the containers:
+
+```bash
+docker compose down
+```
 
 ## Build
 
