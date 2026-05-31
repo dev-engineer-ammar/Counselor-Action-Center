@@ -1,0 +1,16 @@
+import express from 'express';
+import cors from 'cors';
+import { AppContainer } from './container';
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(express.json());
+
+// Wire the fully resolved router object straight from the DI container
+app.use('/api', AppContainer.studentRouter);
+
+app.listen(PORT, () => {
+  console.log(`app listening on port ${PORT}`);
+});
