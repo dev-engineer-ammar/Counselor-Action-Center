@@ -345,3 +345,6 @@ Repository remote:
 ```text
 https://github.com/dev-engineer-ammar/Counselor-Action-Center.git
 ```
+
+
+<img width="890" height="385" alt="Screenshot 2026-06-01 at 2 10 23 PM" src="https://github.com/user-attachments/assets/08603ebc-bf07-4094-982d-6f94b995c063" />
