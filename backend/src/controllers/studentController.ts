@@ -1,55 +1,54 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { HttpError } from '../errors/httpError';
 import { StudentService } from '../services/studentService';
 
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  // Arrow functions automatically bind execution context to the instance
-  public getAllStudents = (req: Request, res: Response): void => {
+  public getAllStudents = (_req: Request, res: Response, next: NextFunction): void => {
     try {
-      const { } = req?.params;
       const data = this.studentService.fetchAllStudents();
       res.status(200).json(data);
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      next(error);
     }
   };
 
-  public getStudentActionCenter = (req: Request, res: Response): void => {
+  public getStudentActionCenter = (req: Request, res: Response, next: NextFunction): void => {
     try {
       const { id } = req.params;
       const actionCenterData = this.studentService.fetchStudentActionCenterData(id);
 
       if (!actionCenterData) {
-        res.status(404).json({ error: `Student trace record ${id} not found` });
+        next(new HttpError(404, `Student trace record ${id} not found`));
         return;
       }
 
       res.status(200).json(actionCenterData);
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      next(error);
     }
   };
 
-  public updateTaskStatus = (req: Request, res: Response): void => {
+  public updateTaskStatus = (req: Request, res: Response, next: NextFunction): void => {
     try {
       const { taskId } = req.params;
       const { status } = req.body;
 
       if (!status || !['todo', 'in_progress', 'completed'].includes(status)) {
-        res.status(400).json({ error: 'Invalid payload status validation data state' });
+        next(new HttpError(400, 'Invalid payload status validation data state'));
         return;
       }
 
       const updatedTask = this.studentService.updateTaskState(taskId, status);
       if (!updatedTask) {
-        res.status(404).json({ error: `Task trace record ${taskId} not found` });
+        next(new HttpError(404, `Task trace record ${taskId} not found`));
         return;
       }
 
       res.status(200).json(updatedTask);
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      next(error);
     }
   };
 }

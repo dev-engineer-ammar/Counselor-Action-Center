@@ -292,3 +292,50 @@ The frontend uses a component-based React structure:
 - `store` holds small UI state, currently the selected student ID.
 
 React Query handles server-state fetching and cache invalidation. Zustand handles lightweight local UI state. This keeps API data and local selection state separate while keeping the UI easy to extend.
+
+## Task 2: Production Readiness Notes
+
+### Reliability Improvements
+
+- Backend requests now receive a request ID from `x-request-id` or a generated UUID, and that ID is returned in the `x-request-id` response header.
+- Backend request logging emits structured JSON with request ID, method, path, status code, duration, and content length so production logs can be filtered by a single failing request.
+- Backend errors now flow through centralized Express error middleware. Client-safe errors return `{ error, requestId }`, while unexpected 500-level failures are logged with the same request ID for correlation.
+
+### Performance Decisions and Tradeoffs
+
+- The backend keeps logging intentionally lightweight with `console.info(JSON.stringify(...))`. This avoids adding a logging transport dependency for the assessment, but in production I would route these logs through a platform collector or a library such as Pino for async transports, redaction, and log levels.
+- Request IDs are assigned before JSON parsing and route handling so every downstream response, including validation errors, can be traced. The tradeoff is a tiny per-request UUID/header cost, which is worth the observability gain.
+- The frontend keeps React Query as the server-state layer so action-center data is cached by selected student and invalidated only after task updates. This avoids broad refetching while keeping mutation behavior simple.
+- The mock data service remains in memory for speed and assessment clarity. A production database version should add indexing around student/task lookups because the current array scans are fine for fixture data but would not scale for large districts.
+- Vite production builds retain sourcemaps for debuggability. That helps post-deploy issue triage, but a production deployment should decide whether sourcemaps are public, private, or uploaded only to an error-tracking service.
+
+### Test Output / CI Run Log
+
+Local verification run on June 1, 2026:
+
+```text
+backend npm test
+✔ student action center API (11.617833ms)
+ℹ tests 1
+ℹ pass 1
+ℹ fail 0
+
+backend npm run build
+tsc
+exit code 0
+
+frontend npm test
+✓ src/components/TaskList.test.tsx (1 test) 38ms
+Test Files 1 passed (1)
+Tests 1 passed (1)
+
+frontend npm run build
+✓ 151 modules transformed.
+✓ built in 805ms
+```
+
+Repository remote:
+
+```text
+https://github.com/dev-engineer-ammar/Counselor-Action-Center.git
+```
