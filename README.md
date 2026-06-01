@@ -320,6 +320,9 @@ backend npm test
 ℹ pass 1
 ℹ fail 0
 
+<img width="909" height="398" alt="Screenshot 2026-06-01 at 2 09 05 PM" src="https://github.com/user-attachments/assets/7319be35-1360-45e1-a501-7bedafa617b5" />
+
+
 backend npm run build
 tsc
 exit code 0
@@ -328,6 +331,9 @@ frontend npm test
 ✓ src/components/TaskList.test.tsx (1 test) 38ms
 Test Files 1 passed (1)
 Tests 1 passed (1)
+
+<img width="890" height="385" alt="Screenshot 2026-06-01 at 2 10 23 PM" src="https://github.com/user-attachments/assets/992a7a8b-f0dd-4588-bff7-75aef7e0df50" />
+
 
 frontend npm run build
 ✓ 151 modules transformed.
